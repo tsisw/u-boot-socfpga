@@ -117,6 +117,15 @@ static void i3c_dw_irq(const struct udevice *dev, struct dw_i3c_xfer *xfer)
             writel(INTR_TRANSFER_ERR_STAT,
                     priv->regs + INTR_STATUS);
         }
+
+	/* set back to THIGH_MAX_NS, after disable spike filter */
+	if (priv->config.first_broadcast) {
+	    priv->config.first_broadcast = false;
+
+	    int ret = dw_i3c_init_scl_timing(dev);
+	    if (ret)
+		return ret;
+	}
     }
 }
 
@@ -1395,6 +1404,14 @@ static int dw_i3c_init_scl_timing(const struct udevice *dev)
         hcnt = SCL_I3C_TIMING_CNT_MIN;
     }
 
+    /* set back to THIGH_MAX_NS, after disable spike filter */
+    if (!priv->config.first_broadcast) {
+        lcnt = SCL_I3C_TIMING_LCNT(readl(priv->regs + SCL_I3C_OD_TIMING));
+        scl_timing = SCL_I3C_TIMING_HCNT(hcnt) | lcnt;
+        writel(scl_timing, master->regs + SCL_I3C_OD_TIMING);
+        return 0;
+    }
+
     lcnt = DIV_ROUND_UP(core_rate, I3C_BUS_TYP_I3C_SCL_RATE) - hcnt;
     if (lcnt < SCL_I3C_TIMING_CNT_MIN) {
         lcnt = SCL_I3C_TIMING_CNT_MIN;
@@ -1407,6 +1424,8 @@ static int dw_i3c_init_scl_timing(const struct udevice *dev)
 
     /* I3C_OD */
     lcnt = DIV_ROUND_UP(I3C_BUS_TLOW_OD_MIN_NS, core_period);
+    /* first broadcast thigh to 200ns, to disable spike filter */
+    hcnt = DIV_ROUND_UP(I3C_BUS_THIGH_INIT_OD_MIN_NS, core_period);
     scl_timing = SCL_I3C_TIMING_HCNT(hcnt) | SCL_I3C_TIMING_LCNT(lcnt);
     writel(scl_timing, priv->regs + SCL_I3C_OD_TIMING);
 
@@ -1897,6 +1916,9 @@ int dw_i3c_probe(struct udevice *dev)
                 DEVICE_ADDR_TABLE_POINTER));
     priv->data.dctstartaddr = DEVICE_CHAR_TABLE_ADDR(readl(priv->regs +
                 DEV_CHAR_TABLE_POINTER));
+
+    /* first broadcast to disable spike filter */
+    priv->config.first_broadcast = true;
 
     /* Config timing registers */
     switch (priv->data.base.mode) {
