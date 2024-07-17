@@ -5,7 +5,7 @@
 #include "socfpga_agilex.dtsi"
 
 / {
-	model = "SoCFPGA Agilex7-M SoCDK";
+	model = "BittWare Agilex-7M";
 
 	aliases {
 		serial0 = &uart0;
@@ -14,28 +14,12 @@
 		ethernet2 = &gmac2;
 	};
 
-	leds {
-		compatible = "gpio-leds";
-		hps0 {
-			label = "hps_led0";
-			gpios = <&portb 20 GPIO_ACTIVE_HIGH>;
-		};
-
-		hps1 {
-			label = "hps_led1";
-			gpios = <&portb 19 GPIO_ACTIVE_HIGH>;
-		};
-
-		hps2 {
-			label = "hps_led2";
-			gpios = <&portb 21 GPIO_ACTIVE_HIGH>;
-		};
-	};
-
 	memory {
 		device_type = "memory";
 		/* We expect the bootloader to fill in the reg */
 		reg = <0 0 0 0>;
+        /*reg = <0 0x00000000 0 0x80000000>, */
+        /*       <2 0x80000000 0 0x80000000>; */
 	};
 
 	soc {
@@ -47,12 +31,20 @@
 	};
 };
 
+&i2c0 {
+	status = "okay";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
 &gpio1 {
 	status = "okay";
 };
 
 &gmac0 {
-	status = "okay";
+	status = "disabled";
 	phy-mode = "rgmii";
 	phy-handle = <&phy0>;
 
@@ -98,10 +90,31 @@
 };
 
 &watchdog0 {
-	status = "okay";
+	status = "disabled";
+};
+
+&nand {
+    status = "okay";
+	nand-bus-width = <8>;
+	flash@0 {
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			partition@0 {
+				label = "u-boot";
+				reg = <0 0x200000>;
+			};
+			partition@200000 {
+				label = "root";
+				reg = <0x200000 0x3fe00000>;
+			};
+		};
+	};
 };
 
 &qspi {
+    status = "disabled";
 	flash0: flash@0 {
 		#address-cells = <1>;
 		#size-cells = <1>;

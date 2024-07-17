@@ -11,7 +11,7 @@
 };
 
 &gmac2 {
-	status = "okay";
+	status = "disabled";
 	phy-mode = "rgmii";
 	phy-handle = <&phy0>;
 
@@ -42,6 +42,10 @@
 
 &mmc {
 	status = "disabled";
+};
+
+&i2c0 {
+    status = "okay";
 };
 
 &nand {
