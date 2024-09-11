@@ -170,7 +170,7 @@
 	"nandfitboot=setenv bootargs " CONFIG_BOOTARGS \
 			" root=${nandroot} rw rootwait rootfstype=ubifs ubi.mtd=1; " \
 			"bootm ${loadaddr}\0" \
-	"nandfitload=ubi part root; ubi readvol ${loadaddr} kernel\0" \
+	"nandfitload=enable bridge 7; ubi part root; ubi readvol ${loadaddr} kernel\0" \
 	"socfpga_legacy_reset_compat=1\0" \
 	"rsu_status=rsu dtb; rsu display_dcmf_version; "\
 		"rsu display_dcmf_status; rsu display_max_retry\0" \
@@ -209,7 +209,7 @@
 	"nandfitboot=setenv bootargs " CONFIG_BOOTARGS \
 			" root=${nandroot} rw rootwait rootfstype=ubifs ubi.mtd=1; " \
 			"bootm ${loadaddr}\0" \
-	"nandfitload=ubi part root; ubi readvol ${loadaddr} kernel\0" \
+	"nandfitload=bridge enable 7; ubi part root; ubi readvol ${loadaddr} kernel\0" \
 	"socfpga_legacy_reset_compat=1\0" \
 	"rsu_status=rsu dtb; rsu display_dcmf_version; "\
 		"rsu display_dcmf_status; rsu display_max_retry\0" \
@@ -275,7 +275,7 @@
 	"nandfitboot=setenv bootargs " CONFIG_BOOTARGS \
 			" root=${nandroot} rw rootwait rootfstype=ubifs ubi.mtd=1; " \
 			"bootm ${loadaddr}\0" \
-	"nandfitload=ubi part root; ubi readvol ${loadaddr} kernel\0" \
+	"nandfitload=enable bridge 7; ubi part root; ubi readvol ${loadaddr} kernel\0" \
 	"socfpga_legacy_reset_compat=1\0" \
 	"rsu_status=rsu dtb; rsu display_dcmf_version; "\
 		"rsu display_dcmf_status; rsu display_max_retry\0" \
