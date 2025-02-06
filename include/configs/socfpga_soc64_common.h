@@ -149,6 +149,7 @@
 	"scriptsize=0x00010000\0" \
 	"qspibootimageaddr=0x02120000\0" \
 	"bootimagesize=0x03200000\0" \
+        "fdt_high=0x3F000000\0" \
 	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
 	"bootfile=" CONFIG_BOOTFILE "\0" \
 	"mmcroot=/dev/mmcblk0p2\0" \
@@ -191,6 +192,7 @@
 	"bootimagesize=0x03200000\0" \
 	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
 	"bootfile=" CONFIG_BOOTFILE "\0" \
+	"fdt_high=0x3F000000\0" \
 	"mmcroot=/dev/mmcblk0p2\0" \
 	"mtdids=" CONFIG_MTDIDS_DEFAULT "\0" \
 	"mtdparts=" CONFIG_MTDPARTS_DEFAULT "\0" \
@@ -240,6 +242,7 @@
 	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
 	"bootfile=" CONFIG_BOOTFILE "\0" \
 	"fdt_addr=8000000\0" \
+	"fdt_high=0x3F000000\0" \
 	"fdtimage=" CONFIG_DEFAULT_DEVICE_TREE ".dtb\0" \
 	"mmcroot=/dev/mmcblk0p2\0" \
 	"mmcboot=setenv bootargs " CONFIG_BOOTARGS \
