@@ -169,6 +169,7 @@
 	"scriptfile=boot.scr\0" \
 	"nandroot=ubi0:rootfs\0" \
 	"nandfitboot=setenv bootargs " CONFIG_BOOTARGS \
+			" hugepagesz=2M hugepages=20 " \
 			" root=${nandroot} rw rootwait rootfstype=ubifs ubi.mtd=1; " \
 			"bootm ${loadaddr}\0" \
 	"nandfitload=enable bridge 7; ubi part root; ubi readvol ${loadaddr} kernel\0" \
@@ -210,6 +211,7 @@
 	"scriptfile=u-boot.scr\0" \
 	"nandroot=ubi0:rootfs\0" \
 	"nandfitboot=setenv bootargs " CONFIG_BOOTARGS \
+			" hugepagesz=2M hugepages=20" \
 			" root=${nandroot} rw rootwait rootfstype=ubifs ubi.mtd=1; " \
 			"bootm ${loadaddr}\0" \
 	"nandfitload=bridge enable 7; ubi part root; ubi readvol ${loadaddr} kernel\0" \
@@ -278,6 +280,7 @@
 			" root=${nandroot} rw rootwait rootfstype=ubifs ubi.mtd=1; " \
 			"booti ${loadaddr} - ${fdt_addr}\0" \
 	"nandfitboot=setenv bootargs " CONFIG_BOOTARGS \
+			" hugepagesz=2M hugepages=20" \
 			" root=${nandroot} rw rootwait rootfstype=ubifs ubi.mtd=1; " \
 			"bootm ${loadaddr}\0" \
 	"nandfitload=enable bridge 7; ubi part root; ubi readvol ${loadaddr} kernel\0" \
